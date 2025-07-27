@@ -1,0 +1,56 @@
+
+services:
+  interview-ready-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: interview-ready-api
+    ports:
+      - "8003:8003"
+    environment:
+      
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - GEMINI_MODEL=${GEMINI_MODEL}
+      
+     
+      - MONGODB_URL=${MONGODB_URL}
+      - MONGODB_DB_NAME=${MONGODB_DB_NAME}
+      
+      
+      - RABBITMQ_HOST=${RABBITMQ_HOST}
+      - RABBITMQ_PORT=${RABBITMQ_PORT}
+      - RABBITMQ_USERNAME=${RABBITMQ_USERNAME}
+      - RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}
+      - RABBITMQ_VHOST=${RABBITMQ_VHOST}
+      - RABBITMQ_URL=${RABBITMQ_URL}
+      
+      
+      - NOTIFICATIONS_QUEUE_NAME=${NOTIFICATIONS_QUEUE_NAME}
+      - PROFILE_QUEUE_NAME=${PROFILE_QUEUE_NAME}
+      - POINTS_QUEUE_NAME=${POINTS_QUEUE_NAME}
+      - ACHIEVEMENTS_QUEUE_NAME=${ACHIEVEMENTS_QUEUE_NAME}
+      
+      
+      - APP_NAME=${APP_NAME}
+      - APP_VERSION=${APP_VERSION}
+      - ENVIRONMENT=${ENVIRONMENT}
+      - DEBUG=${DEBUG}
+      - LOG_LEVEL=${LOG_LEVEL}
+      
+      
+      - PROFILE_SERVICE_URL=${PROFILE_SERVICE_URL}
+    restart: unless-stopped
+    volumes:
+      - ./src:/app/src
+    networks:
+      - interview-ready-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8003/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  interview-ready-network:
+    driver: bridge
