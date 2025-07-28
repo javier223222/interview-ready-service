@@ -47,7 +47,7 @@ class ResponseInterviewReadyUseCase(BaseInterviewReadyUseCase):
             
 
             
-            if good_question :
+            if True :
 
                 
             
